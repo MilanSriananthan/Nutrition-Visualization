@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Calorie Counter</title>
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Dosis:400,700"
+      rel="stylesheet"
+    />
+    <link href="style.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <form action="/action_page.php" class="mainform">
+      <div class="page">
+        <label class="field field_v1">
+          <input class="field__input" id="food" placeholder="e.g. carrots" />
+          <span class="field__label-wrap">
+            <span class="field__label">Add Food</span>
+          </span>
+        </label>
+        <label class="field field_v2">
+          <input class="field__input amount" id="amount" placeholder="grams" />
+          <span class="field__label-wrap">
+            <span class="field__label">Amount</span>
+          </span>
+        </label>
+        <input class="button" type="submit" value="Visualize" />
+      </div>
+    </form>
+    <!-- <form action="/action_page.php" class="mainform">
+      <label for="food">Add Food:</label><br />
+      <input
+        type="text"
+        id="food"
+        name="food"
+        placeholder="e.g. Carrots"
+      /><br />
+      <label for="amount">Amount:</label><br />
+      <input
+        type="text"
+        id="amount"
+        name="amount"
+        placeholder="Enter amount in grams"
+      /><br />
+      <input class="button" type="submit" value="Submit" />
+    </form> -->
+    <canvas
+      id="myCanvas"
+      width="1350"
+      height="700"
+      style="border: 1px solid #d3d3d3"
+    ></canvas>
+    <script src="script.js"></script>
+  </body>
+</html>
