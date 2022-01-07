@@ -6,6 +6,57 @@ const mainForm = document.querySelector(".mainform");
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
 
+const removeZeros = function (listofObjects) {
+  var notZero = [];
+  for (let i = 0; i < listofObjects.length; i++) {
+    if (listofObjects[i].amount !== 0) {
+      notZero.push(listofObjects[i]);
+    }
+  }
+  return notZero;
+};
+
+const FindMax = function (listofObjects) {
+  var maxAmount = 0;
+  for (let i = 0; i < listofObjects.length; i++) {
+    if (listofObjects[i].amount > maxAmount) {
+      maxAmount = listofObjects[i].amount;
+    }
+  }
+  return maxAmount;
+};
+
+const notLarge = function (listofObjects, maxAmount) {
+  const ratio = maxAmount / 200;
+  var majorNutrients = [];
+  for (let i = 0; i < listofObjects.length; i++) {
+    listofObjects[i].size = listofObjects[i].amount / ratio;
+    if (listofObjects[i].size > 10) {
+      majorNutrients.push(listofObjects[i]);
+    }
+  }
+  return majorNutrients;
+};
+
+const draw = function (initialX, initialY, listofObjects) {
+  for (let x = 0; x < listofObjects.length - 1; x++) {
+    ctx.beginPath();
+    ctx.arc(initialX, initialY, listofObjects[x].size, 0, 2 * Math.PI);
+    ctx.stroke();
+    initialX += listofObjects[x].size + listofObjects[x + 1].size;
+    // initialY += majorNutrients[x].size + majorNutrients[x + 1].size;
+  }
+  ctx.beginPath();
+  ctx.arc(
+    initialX,
+    initialY,
+    listofObjects[listofObjects.length - 1].size,
+    0,
+    2 * Math.PI
+  );
+  ctx.stroke();
+};
+
 async function foodid(food, amount) {
   const response = await fetch(
     `https://api.spoonacular.com/food/ingredients/search?query=${food}&number=1&sortDirection=desc&apiKey=df150d1925174045a287922c56a2a01c`
@@ -17,20 +68,25 @@ async function foodid(food, amount) {
   );
   const data2 = await response2.json();
   const nutritionfacts = data2.nutrition.nutrients;
-  ctx.beginPath();
+  console.log(nutritionfacts);
 
-  for (let i = 0; i < nutritionfacts.length; i++) {
-    ctx.arc(100, 75, nutritionfacts[i].amount, 0, 2 * Math.PI);
-    // mainForm.insertAdjacentText(
-    //   "afterend",
-    //   `${nutritionfacts[i].name}: ${nutritionfacts[i].amount}${nutritionfacts[i].unit} `
-    // );
-    // if (nutritionfacts[i].title === "Calories") {
-    //   var calories = nutritionfacts[i].amount;
-    //   //   console.log(calories);
-    // }
-  }
-  ctx.stroke();
+  const notZero = removeZeros(nutritionfacts);
+
+  const maxAmount = FindMax(notZero);
+
+  const majorNutrients = notLarge(notZero, maxAmount);
+
+  draw(300, 400, majorNutrients);
+
+  // mainForm.insertAdjacentText(
+  //   "afterend",
+  //   `${nutritionfacts[i].name}: ${nutritionfacts[i].amount}${nutritionfacts[i].unit} `
+  // );
+  // if (nutritionfacts[i].title === "Calories") {
+  //   var calories = nutritionfacts[i].amount;
+  //   //   console.log(calories);
+  // }
+
   //   console.log(typeof calories);
   //   console.log(calories);
   //   document.getElementById("cal").textContent = calories;
