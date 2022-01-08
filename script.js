@@ -27,11 +27,11 @@ const FindMax = function (listofObjects) {
 };
 
 const notLarge = function (listofObjects, maxAmount) {
-  const ratio = maxAmount / 200;
+  const ratio = maxAmount / 300;
   var majorNutrients = [];
   for (let i = 0; i < listofObjects.length; i++) {
     listofObjects[i].size = listofObjects[i].amount / ratio;
-    if (listofObjects[i].size > 10) {
+    if (listofObjects[i].size > 40) {
       majorNutrients.push(listofObjects[i]);
     }
   }
@@ -41,8 +41,21 @@ const notLarge = function (listofObjects, maxAmount) {
 const draw = function (initialX, initialY, listofObjects) {
   for (let x = 0; x < listofObjects.length - 1; x++) {
     ctx.beginPath();
+
     ctx.arc(initialX, initialY, listofObjects[x].size, 0, 2 * Math.PI);
+    ctx.fillStyle = "#29c5f6";
+    ctx.fill();
     ctx.stroke();
+    ctx.fillStyle = "White";
+    ctx.font = "20px Arial";
+    ctx.fillText(
+      listofObjects[x].name +
+        ": " +
+        listofObjects[x].amount +
+        listofObjects[x].unit,
+      initialX - 80,
+      initialY
+    );
     initialX += listofObjects[x].size + listofObjects[x + 1].size;
     // initialY += majorNutrients[x].size + majorNutrients[x + 1].size;
   }
@@ -54,7 +67,19 @@ const draw = function (initialX, initialY, listofObjects) {
     0,
     2 * Math.PI
   );
+  ctx.fillStyle = "#29c5f6";
+  ctx.fill();
   ctx.stroke();
+  ctx.font = "20px Arial";
+  ctx.fillStyle = "White";
+  ctx.fillText(
+    listofObjects[listofObjects.length - 1].name +
+      ": " +
+      listofObjects[listofObjects.length - 1].amount +
+      listofObjects[listofObjects.length - 1].unit,
+    initialX - 80,
+    initialY
+  );
 };
 
 async function foodid(food, amount) {
@@ -76,7 +101,7 @@ async function foodid(food, amount) {
 
   const majorNutrients = notLarge(notZero, maxAmount);
 
-  draw(300, 400, majorNutrients);
+  draw(300, 350, majorNutrients);
 
   // mainForm.insertAdjacentText(
   //   "afterend",
@@ -102,6 +127,8 @@ async function foodid(food, amount) {
 
 button.addEventListener("click", function (e) {
   e.preventDefault();
+  ctx.fillStyle = "#f3f3f3";
+  ctx.fillRect(0, 0, 1350, 700);
   const food = document.getElementById("food").value;
   const amount = document.getElementById("amount").value;
   foodid(food, amount);
